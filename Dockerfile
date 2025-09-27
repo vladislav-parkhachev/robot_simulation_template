@@ -4,7 +4,7 @@ FROM osrf/ros:${ROS_DISTRO}-desktop-full
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ROS_DISTRO=${ROS_DISTRO}
 
-ARG BRANCH=turtlebot3_burger
+ARG BRANCH=main
 
 RUN rosdep init || true && rosdep update
 
