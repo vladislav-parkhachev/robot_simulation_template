@@ -10,6 +10,8 @@ WORKDIR /robot_simulation_ws/src
 
 COPY robot_simulation/package.xml robot_simulation/
 
+RUN git clone https://github.com/vladislav-parkhachev/robot_description_template.git
+
 WORKDIR /robot_simulation_ws
 
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
@@ -28,4 +30,4 @@ SHELL ["/bin/bash", "-c"]
 
 ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/${ROS_DISTRO}/setup.bash && source /robot_simulation_ws/install/setup.bash && exec \"$@\"", "--"]
 
-CMD ["ros2", "launch", "robot_simulation", "simulation_world.launch.py"]
+CMD ["ros2", "launch", "robot_simulation", "bringup_simulation.launch.py"]
