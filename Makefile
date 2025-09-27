@@ -16,6 +16,7 @@ run_simulation_world:
 		-e NVIDIA_VISIBLE_DEVICES=all \
       	-e NVIDIA_DRIVER_CAPABILITIES=graphics,utility,compute \
 		-v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+		-v ../robot_description_template/robot_description:/robot_simulation_ws/src/robot_description \
 		$(IMAGE_NAME):$(TAG) 
 
 	xhost -local:docker

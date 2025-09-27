@@ -4,13 +4,13 @@ FROM osrf/ros:${ROS_DISTRO}-desktop-full
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ROS_DISTRO=${ROS_DISTRO}
 
+ARG BRANCH=turtlebot3_burger
+
 RUN rosdep init || true && rosdep update
 
 WORKDIR /robot_simulation_ws/src
 
 COPY robot_simulation/package.xml robot_simulation/
-
-RUN git clone https://github.com/vladislav-parkhachev/robot_description_template.git
 
 WORKDIR /robot_simulation_ws
 
@@ -26,8 +26,24 @@ WORKDIR /robot_simulation_ws
 
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh && colcon build
 
+WORKDIR /robot_simulation_ws/src
+
+RUN mkdir robot_description && \
+    curl -fSL \
+      https://raw.githubusercontent.com/vladislav-parkhachev/robot_description_template/${BRANCH}/robot_description/package.xml \
+      -o robot_description/package.xml
+
+WORKDIR /robot_simulation_ws
+
+RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
+    apt-get update && \
+    rosdep install --from-paths src --ignore-src -r -y
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 SHELL ["/bin/bash", "-c"]
 
-ENTRYPOINT ["/bin/bash", "-c", "source /opt/ros/${ROS_DISTRO}/setup.bash && source /robot_simulation_ws/install/setup.bash && exec \"$@\"", "--"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["ros2", "launch", "robot_simulation", "bringup_simulation.launch.py"]
