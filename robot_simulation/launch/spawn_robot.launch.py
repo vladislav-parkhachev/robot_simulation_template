@@ -49,7 +49,8 @@ def generate_launch_description():
         ]),
         launch_arguments={
             'jsp_gui': jsp_gui,
-            'use_sim_time': use_sim_time
+            'use_sim_time': use_sim_time,
+            'simulation' : 'true'
         }.items()
     )
 
