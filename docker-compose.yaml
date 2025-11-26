@@ -1,0 +1,46 @@
+services:
+  robot_simulation_world:
+    build:
+      context: ..
+      dockerfile: robot_simulation/Dockerfile
+      args:
+        ROS_DISTRO: ${ROS_DISTRO}
+    image: robot_simulation:${ROS_DISTRO}
+    container_name: robot_simulation_world
+    network_mode: host
+    runtime: nvidia
+    environment:
+      - DISPLAY=${DISPLAY}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - ROS_DISTRO=${ROS_DISTRO}
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    devices:
+      - /dev/dri:/dev/dri
+    user: "1000:1000"
+    command: bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && \
+                      source /robot_simulation_ws/install/setup.bash && \
+                      exec ros2 launch robot_simulation world.launch.py"
+
+  robot_simulation_spawn:
+    build:
+      context: ..
+      dockerfile: robot_simulation/Dockerfile
+      args:
+        ROS_DISTRO: ${ROS_DISTRO}
+    image: robot_simulation:${ROS_DISTRO}
+    container_name: robot_simulation_spawn
+    network_mode: host
+    runtime: nvidia
+    environment:
+      - DISPLAY=${DISPLAY}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - ROS_DISTRO=${ROS_DISTRO}
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    devices:
+      - /dev/dri:/dev/dri
+    user: "1000:1000"
+    command: bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && \ 
+                      source /robot_simulation_ws/install/setup.bash && \
+                      exec ros2 launch robot_simulation robot_spawn.launch.py"

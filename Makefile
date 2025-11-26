@@ -1,43 +1,34 @@
-.PHONY: run_simulation_robot run_simulation_world
+.PHONY: build_robot_simulation_world \
+		run_robot_simulation_world \
+		stop_robot_simulation_world \
+		connect_robot_simulation_world \
+		build_robot_simulation_spawn \
+		run_robot_simulation_spawn \
+		stop_robot_simulation_spawn \
+		connect_robot_simulation_spawn
 
-IMAGE_NAME=robot_simulation
-TAG=latest
+build_robot_simulation_world:
+	@docker compose build robot_simulation_world
 
-run_simulation_robot:
-	xhost +local:docker
+run_robot_simulation_world:
+	@docker compose up robot_simulation_world
 
-	docker build -t $(IMAGE_NAME):$(TAG) .
+stop_robot_simulation_world:
+	@docker compose stop robot_simulation_world
 
-	docker run -it --rm \
-		--net=host \
-		--gpus all \
-		-e DISPLAY=$$DISPLAY \
-		-e QT_X11_NO_MITSHM=1 \
-		-e NVIDIA_VISIBLE_DEVICES=all \
-      	-e NVIDIA_DRIVER_CAPABILITIES=graphics,utility,compute \
-		-v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-		-v ../robot_description_template/robot_description:/robot_simulation_ws/src/robot_description \
-		$(IMAGE_NAME):$(TAG) 
+connect_robot_simulation_world:
+	@docker exec -it robot_simulation_world bash
 
-	xhost -local:docker
+build_robot_simulation_spawn:
+	@docker compose build robot_simulation_spawn
 
-run_simulation_world:
-	xhost +local:docker
+run_robot_simulation_spawn:
 
-	docker build -t $(IMAGE_NAME):$(TAG) .
+	@docker compose up robot_simulation_spawn
 
-	docker run -it --rm \
-		--net=host \
-		--gpus all \
-		-e DISPLAY=$$DISPLAY \
-		-e QT_X11_NO_MITSHM=1 \
-		-e NVIDIA_VISIBLE_DEVICES=all \
-      	-e NVIDIA_DRIVER_CAPABILITIES=graphics,utility,compute \
-		-v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-		-v ../robot_description_template/robot_description:/robot_simulation_ws/src/robot_description \
-		$(IMAGE_NAME):$(TAG) \
-		ros2 launch robot_simulation simulation_world.launch.py
+stop_robot_simulation_spawn:
+	@docker compose stop robot_simulation_spawn
 
-	xhost -local:docker
+connect_robot_simulation_spawn:
+	@docker exec -it robot_simulation_spawn bash
 
-	

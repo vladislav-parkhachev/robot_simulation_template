@@ -3,19 +3,25 @@
 <package format="3">
   <name>robot_simulation</name>
   <version>0.0.0</version>
-  <description>TODO: Package simulation</description>
-  <maintainer email="vladparhachev777@gmail.com">robokvant</maintainer>
-  <license>TODO: License declaration</license>
+  <description>TODO: Package description</description>
+  <maintainer email="vladparhachev777@gmail.com">vladislav</maintainer>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-  
+
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
-  <exec_depend>gz_ros2_control</exec_depend>
-  <exec_depend>ros2_control</exec_depend>
-  <exec_depend>ros2_controllers</exec_depend>
-
+  <depend>ros_gz_sim</depend>
+  <depend>ros_gz_bridge</depend>
+  <depend>gz_ros2_control</depend>
+  <depend>ros2_control</depend>
+  <depend>ros2_controllers</depend>
+  <depend>controller_manager</depend>
+  <depend>diff_drive_controller</depend>
+  <depend>joint_state_broadcaster</depend>
+  <exec_depend>rmw_cyclonedds_cpp</exec_depend>
+  
   <export>
     <build_type>ament_cmake</build_type>
   </export>
