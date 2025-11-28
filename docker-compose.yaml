@@ -19,8 +19,8 @@ services:
       - /dev/dri:/dev/dri
     user: "1000:1000"
     command: bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && \
-                      source /robot_simulation_ws/install/setup.bash && \
-                      exec ros2 launch robot_simulation world.launch.py"
+      source /robot_simulation_ws/install/setup.bash && \
+      exec ros2 launch robot_simulation world.launch.py"
 
   robot_simulation_spawn:
     build:
@@ -41,6 +41,6 @@ services:
     devices:
       - /dev/dri:/dev/dri
     user: "1000:1000"
-    command: bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && \ 
-                      source /robot_simulation_ws/install/setup.bash && \
-                      exec ros2 launch robot_simulation robot_spawn.launch.py"
+    command: bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && \
+      source /robot_simulation_ws/install/setup.bash && \
+      exec ros2 launch robot_simulation robot_spawn.launch.py"
